@@ -1,0 +1,36 @@
+version: "3.3"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    volumes:
+      - .:/code
+      - logvolume01:/var/log
+    environment:
+     - CONFIG_PATH=./config
+    depends_on:
+      - db
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3309:3306'
+    expose:
+      - '3309'
+    volumes:
+      - ./db:/var/lib/mysql:rw
+      - ./dbscripts/:/docker-entrypoint-initdb.d:rw
+    security_opt:
+      - seccomp:unconfined
+
+volumes:
+  logvolume01: {}
+  mysqldb8:

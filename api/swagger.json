@@ -1,0 +1,122 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json",
+    "text/csv"
+  ],
+  "schemes": [
+    "http"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "Documentation for Store Manager API",
+    "title": "Store Manager API",
+    "version": "1.0.0"
+  },
+  "basePath": "/",
+  "paths": {
+    "/api/submit": {
+      "post": {
+        "description": "Creates jobs",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "StoreManager"
+        ],
+        "operationId": "submit",
+        "parameters": [
+          {
+            "description": "Job request",
+            "name": "requestBody",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SubmitRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "success response",
+            "schema": {
+              "$ref": "#/definitions/SubmitResponse"
+            }
+          },
+          "400": {
+            "description": "error response",
+            "schema": {
+              "$ref": "#/definitions/SubmitResponse"
+            }
+          },
+          "500": {
+            "description": "error response",
+            "schema": {
+              "$ref": "#/definitions/SubmitResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "SubmitRequest": {
+      "description": "SubmitRequest is model for submit request",
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Count"
+        },
+        "visits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Visit"
+          },
+          "x-go-name": "Visits"
+        }
+      },
+      "x-go-package": "storemanager/pkg/model"
+    },
+    "SubmitResponse": {
+      "description": "SubmitResponse is model for submit response",
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "x-go-name": "Error"
+        },
+        "job_id": {
+          "type": "string",
+          "x-go-name": "JobID"
+        }
+      },
+      "x-go-package": "storemanager/pkg/model"
+    },
+    "Visit": {
+      "type": "object",
+      "properties": {
+        "image_url": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-name": "ImageUrl"
+        },
+        "store_id": {
+          "type": "string",
+          "x-go-name": "StoreID"
+        },
+        "visit_time": {
+          "type": "string",
+          "format": "date-time",
+          "x-go-name": "VisitTime"
+        }
+      },
+      "x-go-package": "storemanager/pkg/model"
+    }
+  }
+}

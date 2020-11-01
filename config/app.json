@@ -1,0 +1,17 @@
+{
+    "app_port":"9000",
+    "db": {
+        "mysqldb": {
+          "read": {
+            "connection_string": "root:password@tcp(localhost:3309)/storeDB?charset=utf8&parseTime=True&loc=Local",
+            "max_idle_conns": 10,
+            "max_open_conns": 100
+          },
+          "master": {
+            "connection_string": "root:password@tcp(localhost:3309)/storeDB?charset=utf8&parseTime=True&loc=Local",
+            "max_idle_conns": 10,
+            "max_open_conns": 100
+          }
+        }
+    }
+}
