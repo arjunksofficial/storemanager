@@ -5,6 +5,7 @@ import "time"
 const (
 	StatusOngoing   = "ongoing"
 	StatusCompleted = "completed"
+	StatusFailed    = "failed"
 )
 
 type BaseModel struct {
@@ -22,7 +23,7 @@ type Image struct {
 	BaseModel
 	RequestID int64
 	ImageURL  string
-	StoreTID  int64
+	StoreID   string
 	VisitTime *time.Time
 	Perimeter float64
 	Status    string

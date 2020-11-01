@@ -53,3 +53,43 @@ type SubmitResponse struct {
 	JobID int64  `json:"job_id,omitempty"`
 	Error string `json:"error,omitempty"`
 }
+
+type StatusError struct {
+	StoreID string `json:"store_id,omitempty"`
+	Error   string `json:"error,omitempty"`
+}
+
+// StatusResponse is model for submit response
+// swagger:model StatusResponse
+// in: body
+type StatusResponse struct {
+	Status string        `json:"status,omitempty"`
+	JobID  int64         `json:"job_id,omitempty"`
+	Errors []StatusError `json:"errors,omitempty"`
+	Error  string        `json:"error,omitempty"`
+}
+
+type VisitData struct {
+	Date      *time.Time `json:"date,omitempty"`
+	Perimeter float64    `json:"perimeter,omitempty"`
+}
+
+type VisitResult struct {
+	StoreID   string      `json:"store_id,omitempty"`
+	Area      int64       `json:"area,omitempty"`
+	StoreName string      `json:"store_name,omitempty"`
+	Datas     []VisitData `json:"data,omitempty"`
+}
+
+// VisitResponse is model for visit response
+// swagger:model VisitResponse
+// in: body
+type VisitResponse struct {
+	Results []VisitResult `json:"results,omitempty"`
+	Error   string        `json:"error,omitempty"`
+}
+
+type DateFilter struct {
+	Start *time.Time
+	End   *time.Time
+}

@@ -11,6 +11,7 @@ require (
 	github.com/mailru/easyjson v0.7.0 // indirect
 	github.com/sirupsen/logrus v1.7.0
 	github.com/spf13/viper v1.7.1
+	github.com/stretchr/testify v1.6.1
 	gitlab.com/go-seller/libs v0.0.16
 	gitlab.com/seller-app/spaccess v0.0.0-20200423103212-a624d73389d7
 	go.opencensus.io v0.22.1 // indirect

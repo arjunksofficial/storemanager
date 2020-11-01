@@ -24,7 +24,7 @@ func GetRouter() *chi.Mux {
 	// Set a timeout value on the request context (ctx), that will signal
 	// through ctx.Done() that the request has timed out and further
 	// processing should be stopped.
-	// r.Use(middleware.Timeout(60 * time.Second))
+	r.Use(middleware.Timeout(60 * time.Second))
 	mysqlMasterDB, err := db.GetMySQLMasterDB()
 	if err != nil {
 		panic(err)
@@ -35,7 +35,8 @@ func GetRouter() *chi.Mux {
 	}
 	logger := logger.GetLogger()
 	mysqlStore := impl.NewMySQLStore(mysqlMasterDB, mysqlReadDB)
-	storeManagerService := service.NewStoreManager(mysqlStore)
+	imageManager := impl.NewImageManager()
+	storeManagerService := service.NewStoreManager(mysqlStore, imageManager)
 	sH := handler.NewStoreManager(storeManagerService, logger)
 	handler.SetStoreManagerRoutes(r, sH)
 	hH := handler.NewHealth(&startTime)
