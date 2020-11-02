@@ -17,6 +17,46 @@
   },
   "basePath": "/",
   "paths": {
+    "/api/status": {
+      "get": {
+        "description": "Get status of an job",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "StoreManager"
+        ],
+        "operationId": "status",
+        "parameters": [
+          {
+            "description": "Job ID",
+            "name": "jobid",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response",
+            "schema": {
+              "$ref": "#/definitions/StatusResponse"
+            }
+          },
+          "400": {
+            "description": "error response",
+            "schema": {
+              "$ref": "#/definitions/StatusResponse"
+            }
+          },
+          "500": {
+            "description": "error response",
+            "schema": {
+              "$ref": "#/definitions/StatusResponse"
+            }
+          }
+        }
+      }
+    },
     "/api/submit": {
       "post": {
         "description": "Creates jobs",
@@ -59,9 +99,90 @@
           }
         }
       }
+    },
+    "/api/visits": {
+      "get": {
+        "description": "Creates jobs",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "StoreManager"
+        ],
+        "operationId": "visits",
+        "parameters": [
+          {
+            "description": "End Date",
+            "name": "enddate",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success response",
+            "schema": {
+              "$ref": "#/definitions/VisitResponse"
+            }
+          },
+          "400": {
+            "description": "error response",
+            "schema": {
+              "$ref": "#/definitions/VisitResponse"
+            }
+          },
+          "500": {
+            "description": "error response",
+            "schema": {
+              "$ref": "#/definitions/VisitResponse"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
+    "StatusError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "x-go-name": "Error"
+        },
+        "store_id": {
+          "type": "string",
+          "x-go-name": "StoreID"
+        }
+      },
+      "x-go-package": "storemanager/pkg/model"
+    },
+    "StatusResponse": {
+      "description": "StatusResponse is model for submit response",
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "x-go-name": "Error"
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StatusError"
+          },
+          "x-go-name": "Errors"
+        },
+        "job_id": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "JobID"
+        },
+        "status": {
+          "type": "string",
+          "x-go-name": "Status"
+        }
+      },
+      "x-go-package": "storemanager/pkg/model"
+    },
     "SubmitRequest": {
       "description": "SubmitRequest is model for submit request",
       "type": "object",
@@ -90,7 +211,8 @@
           "x-go-name": "Error"
         },
         "job_id": {
-          "type": "string",
+          "type": "integer",
+          "format": "int64",
           "x-go-name": "JobID"
         }
       },
@@ -104,7 +226,7 @@
           "items": {
             "type": "string"
           },
-          "x-go-name": "ImageUrl"
+          "x-go-name": "ImageURLs"
         },
         "store_id": {
           "type": "string",
@@ -114,6 +236,66 @@
           "type": "string",
           "format": "date-time",
           "x-go-name": "VisitTime"
+        }
+      },
+      "x-go-package": "storemanager/pkg/model"
+    },
+    "VisitData": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "x-go-name": "Date"
+        },
+        "perimeter": {
+          "type": "number",
+          "format": "double",
+          "x-go-name": "Perimeter"
+        }
+      },
+      "x-go-package": "storemanager/pkg/model"
+    },
+    "VisitResponse": {
+      "description": "VisitResponse is model for visit response",
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "x-go-name": "Error"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VisitResult"
+          },
+          "x-go-name": "Results"
+        }
+      },
+      "x-go-package": "storemanager/pkg/model"
+    },
+    "VisitResult": {
+      "type": "object",
+      "properties": {
+        "area": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Area"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VisitData"
+          },
+          "x-go-name": "Datas"
+        },
+        "store_id": {
+          "type": "string",
+          "x-go-name": "StoreID"
+        },
+        "store_name": {
+          "type": "string",
+          "x-go-name": "StoreName"
         }
       },
       "x-go-package": "storemanager/pkg/model"

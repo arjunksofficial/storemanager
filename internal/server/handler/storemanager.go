@@ -192,7 +192,7 @@ func (sH *StoreManagerHandler) Status(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// swagger:operation POST /api/submit StoreManager submit
+// swagger:operation GET /api/visits StoreManager visits
 //
 // Creates jobs
 //
@@ -200,27 +200,40 @@ func (sH *StoreManagerHandler) Status(w http.ResponseWriter, r *http.Request) {
 // produces:
 // - application/json
 // parameters:
-// - name: requestBody
-//   in: body
-//   description: Job request
+// - name: area
+//   in: path
+//   description: AreaCode
 //   required: true
-//   schema:
-//     "$ref": "#/definitions/SubmitRequest"
+// parameters:
+// - name: storeid
+//   in: path
+//   description: Store ID
+//   required: true
+// parameters:
+// - name: startdate
+//   in: path
+//   description: Start Date
+//   required: true
+// parameters:
+// - name: enddate
+//   in: path
+//   description: End Date
+//   required: true
 // responses:
-//   '201':
+//   '200':
 //     description: success response
 //     schema:
-//       "$ref": "#/definitions/SubmitResponse"
+//       "$ref": "#/definitions/VisitResponse"
 //   '400':
 //     description: error response
 //     schema:
-//       "$ref": "#/definitions/SubmitResponse"
+//       "$ref": "#/definitions/VisitResponse"
 //   '500':
 //     description: error response
 //     schema:
-//       "$ref": "#/definitions/SubmitResponse"
+//       "$ref": "#/definitions/VisitResponse"
 
-// Submit accepts requests
+// Visits gives job results
 func (sH *StoreManagerHandler) Visits(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	areaCodeString := r.URL.Query().Get("area")
