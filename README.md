@@ -12,7 +12,7 @@ docker compose up -d db
 
 Set env
 ```
-export CONFIG_PATH=/home/arjun/ARJUN/projects/storemanager/config
+export CONFIG_PATH=/home/arjun/ARJUN/projects/storemanager/config/local
 ```
 
 Migrate Store data
