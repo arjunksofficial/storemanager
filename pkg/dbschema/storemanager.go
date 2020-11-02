@@ -19,12 +19,18 @@ type Request struct {
 	Status string
 }
 
-type Image struct {
+type Visit struct {
 	BaseModel
 	RequestID int64
-	ImageURL  string
 	StoreID   string
 	VisitTime *time.Time
+	Status    string
+}
+
+type Image struct {
+	BaseModel
+	VisitID   int64
+	ImageURL  string
 	Perimeter float64
 	Status    string
 }

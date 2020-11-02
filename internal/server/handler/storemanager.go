@@ -60,7 +60,7 @@ func SetStoreManagerRoutes(r chi.Router, sH *StoreManagerHandler) {
 		r.Group(func(r chi.Router) {
 			r.With(middleware.RequestBodyParser(model.SubmitRequest{})).Post("/submit", sH.Submit)
 			r.Get("/status", sH.Status)
-			r.Get("/visit", sH.Visits)
+			r.Get("/visits", sH.Visits)
 		})
 	})
 }
@@ -166,7 +166,7 @@ func (sH *StoreManagerHandler) Status(w http.ResponseWriter, r *http.Request) {
 	}
 	status, failedStoreIDs, sErr := sH.Service.Status(ctx, int64(jobID))
 	if sErr != nil {
-		sH.logger.Errorf("error while creating job, error: %v", sErr.Error)
+		sH.logger.Errorf("error while getting job status, error: %v", sErr.Error)
 		if sErr.StatusCode == 500 {
 			responsehelper.RespondAsJSON(http.StatusInternalServerError, w, model.SubmitResponse{
 				Error: model.InternalError,
@@ -237,23 +237,17 @@ func (sH *StoreManagerHandler) Status(w http.ResponseWriter, r *http.Request) {
 func (sH *StoreManagerHandler) Visits(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	areaCodeString := r.URL.Query().Get("area")
-	if areaCodeString == "" {
+	storeID := r.URL.Query().Get("storeid")
+	if areaCodeString == "" && storeID == "" {
 		responsehelper.RespondAsJSON(http.StatusBadRequest, w, model.VisitResponse{
-			Error: "area required",
+			Error: "area/stroreid required",
 		})
 		return
 	}
 	areaCode, err := strconv.Atoi(areaCodeString)
-	if err != nil {
+	if err != nil && areaCodeString != "" {
 		responsehelper.RespondAsJSON(http.StatusBadRequest, w, model.VisitResponse{
-			Error: "enter valid jobid",
-		})
-		return
-	}
-	storeID := r.URL.Query().Get("storeid")
-	if areaCodeString == "" {
-		responsehelper.RespondAsJSON(http.StatusBadRequest, w, model.VisitResponse{
-			Error: "storeid required",
+			Error: "enter valid area",
 		})
 		return
 	}
@@ -280,9 +274,9 @@ func (sH *StoreManagerHandler) Visits(w http.ResponseWriter, r *http.Request) {
 		}
 		dateFilter.End = &end
 	}
-	sErr := sH.Service.Visits(ctx, int64(areaCode), storeID, dateFilter)
+	visits, sErr := sH.Service.Visits(ctx, int64(areaCode), storeID, dateFilter)
 	if sErr != nil {
-		sH.logger.Errorf("error while creating job, error: %v", sErr.Error)
+		sH.logger.Errorf("error while getting visit details, error: %v", sErr.Error)
 		if sErr.StatusCode == 500 {
 			responsehelper.RespondAsJSON(http.StatusInternalServerError, w, model.VisitResponse{
 				Error: model.InternalError,
@@ -294,5 +288,7 @@ func (sH *StoreManagerHandler) Visits(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
-	responsehelper.RespondAsJSON(http.StatusCreated, w, model.VisitResponse{})
+	responsehelper.RespondAsJSON(http.StatusOK, w, model.VisitResponse{
+		Results: visits,
+	})
 }

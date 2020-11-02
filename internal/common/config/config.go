@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
 func Init() {
 	configPath := os.Getenv("CONFIG_PATH")
+	logrus.Println("Config Path", configPath)
 	if configPath == "" {
 		panic("CONFIG_PATH not set")
 	}

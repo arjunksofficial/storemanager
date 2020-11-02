@@ -28,9 +28,6 @@ func (s SubmitRequest) Validate() error {
 		return errors.New("count and number of visits are not equal")
 	}
 	for _, visit := range s.Visits {
-		if visit.StoreID == "" {
-			return errors.New("empty store_id present")
-		}
 		if len(visit.ImageURLs) == 0 {
 			return errors.New("no image urls present")
 		}
@@ -71,7 +68,7 @@ type StatusResponse struct {
 
 type VisitData struct {
 	Date      *time.Time `json:"date,omitempty"`
-	Perimeter float64    `json:"perimeter,omitempty"`
+	Perimeter int64      `json:"perimeter,omitempty"`
 }
 
 type VisitResult struct {

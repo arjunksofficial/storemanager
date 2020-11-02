@@ -11,10 +11,13 @@ services:
       - logvolume01:/var/log
     environment:
      - CONFIG_PATH=./config
+    networks:
+      - store_net
     depends_on:
       - db
   db:
     image: mysql:8.0
+    command: --sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
     restart: always
     environment:
       MYSQL_DATABASE: 'db'
@@ -25,6 +28,8 @@ services:
       - '3309:3306'
     expose:
       - '3309'
+    networks:
+      - store_net
     volumes:
       - ./db:/var/lib/mysql:rw
       - ./dbscripts/:/docker-entrypoint-initdb.d:rw
@@ -34,3 +39,6 @@ services:
 volumes:
   logvolume01: {}
   mysqldb8:
+
+networks:
+  store_net:
