@@ -24,3 +24,5 @@ Start App
 ```
 go run cmd/app/main.go
 ```
+
+[Swagger Doc](https://github.com/arjunksofficial/storemanager/blob/main/api/swagger.json)
