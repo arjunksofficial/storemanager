@@ -249,8 +249,8 @@
           "x-go-name": "Date"
         },
         "perimeter": {
-          "type": "number",
-          "format": "double",
+          "type": "integer",
+          "format": "int64",
           "x-go-name": "Perimeter"
         }
       },
